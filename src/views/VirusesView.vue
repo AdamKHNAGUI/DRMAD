@@ -2,65 +2,36 @@
   <div>
     <h1>Les virus</h1>
 
-    <p>sous forme de liste avec certains champs</p>
-
     <span>Filtres :</span>
-    <label for="filterpriceactive">par prix</label><input type="checkbox" v-model="filterPriceActive"
-                                                          id="filterpriceactive">
-    <label for="filternameactive">par nom</label><input type="checkbox" v-model="filterNameActive"
-                                                        id="filternameactive">
-    <label for="filterstockactive">par stock</label><input type="checkbox" v-model="filterStockActive"
-                                                           id="filterstockactive">
+    <label><input type="checkbox" v-model="filterPriceActive"> par prix</label>
+    <input v-if="filterPriceActive" v-model="priceFilter" type="number">
+
+    <label><input type="checkbox" v-model="filterNameActive"> par nom</label>
+    <input v-if="filterNameActive" v-model="nameFilter" type="text">
+
+    <label><input type="checkbox" v-model="filterStockActive"> par stock</label>
+    <input v-if="filterStockActive" v-model="stockFilter" type="checkbox">
 
     <hr/>
-    <div v-if="filterPriceActive">
-      <label for="filterprice">prix inférieur à : </label>
-      <input v-model="priceFilter" id="filterprice" type="number">
-    </div>
 
-<!--    <ul>-->
-<!--      <li v-for="(virus, index) in filterVirusesByPrice" :key="index">-->
-<!--        {{ virus.name }} : {{ virus.price }}-->
-<!--      </li>-->
-<!--    </ul>-->
-
-
-
-
-    <div v-if="filterNameActive">
-      <label for="filtername"> nom :</label>
-      <input v-model="nameFilter" id="filtername" type="text">
-    </div>
-<!--    <ul>-->
-<!--      <li v-for="(virus, index) in filterVirusesByName" :key="index">-->
-<!--        {{ virus.name }} : {{ virus.price }}-->
-<!--      </li>-->
-<!--    </ul>-->
-
-
-
-
-    <div v-if="filterStockActive">
-      <label for="filterstock"> en stock :</label>
-      <input v-model="stockFilter" id="filterstock" type="checkbox">
-    </div>
-    <!-- Table pour afficher les résultats -->
-    <table border="1">
-      <tr>
-        <th>Nom</th>
-        <th>Prix</th>
-      </tr>
-      <tr v-for="(virus, index) in filterVirusesByStock" :key="index">
-        <td>{{ virus.name }}</td>
-        <td>{{ virus.price }}</td>
-      </tr>
-    </table>
+    <CheckedList
+        :data="filteredViruses"
+        :fields="nomChamps"
+        :itemCheck="showCheckBox"
+        :checked="checked"
+        :itemButton="{ show: true, text: 'Ajouter au Panier' }"
+        :listButton="{ show: true, text: 'Tout Ajouter au Panier' }"
+        @checked-changed="changeSelection"
+        @item-button-clicked="alertMsg"
+        @list-button-clicked="alertSelected"
+    />
   </div>
 </template>
 
 <script setup>
-import {useShopStore} from "@/stores/shop.js";
-import {computed, ref} from "vue";
+import { ref, computed, watch } from 'vue';
+import { useShopStore } from "@/stores/shop.js";
+import CheckedList from "@/components/CheckedList.vue";
 
 const shopStore = useShopStore();
 
@@ -71,24 +42,60 @@ const filterPriceActive = ref(false);
 const filterNameActive = ref(false);
 const filterStockActive = ref(false);
 
-const filterVirusesByPrice = computed(() => {
-  if (priceFilter.value > 0 && filterPriceActive.value) {
-    return shopStore.viruses.filter(v => v.price < priceFilter.value);
+const nomChamps = ["name","description","stock","wait","sold","price"];
+const showCheckBox = ref(true);
+
+// Tableau des indices sélectionnés dans la liste complète
+const selected = ref([]);
+
+// Liste filtrée combinée
+const filteredViruses = computed(() => {
+  let result = shopStore.viruses;
+
+  if (filterPriceActive.value && priceFilter.value > 0) {
+    result = result.filter(v => v.price < priceFilter.value);
   }
-  return shopStore.viruses;
+  if (filterNameActive.value && nameFilter.value !== "") {
+    result = result.filter(v => v.name.includes(nameFilter.value));
+  }
+  if (filterStockActive.value && stockFilter.value) {
+    result = result.filter(v => v.stock > 0);
+  }
+
+  return result;
 });
 
-const filterVirusesByName = computed(() => {
-  if (nameFilter.value !== "" && filterNameActive.value) {
-    return filterVirusesByPrice.value.filter(v => v.name === nameFilter.value);
+// checked dynamique pour CheckedList
+const checked = computed(() =>
+    filteredViruses.value.map(v => selected.value.includes(shopStore.viruses.indexOf(v)))
+);
+
+// Gérer la sélection
+function changeSelection(idxInFiltered) {
+  const virus = filteredViruses.value[idxInFiltered];
+  const idxInAll = shopStore.viruses.indexOf(virus);
+  if (selected.value.includes(idxInAll)) {
+    selected.value = selected.value.filter(i => i !== idxInAll);
+  } else {
+    selected.value.push(idxInAll);
   }
-  return filterVirusesByPrice.value;
+}
+
+// Supprimer de selected les virus qui ne sont plus filtrés
+watch(filteredViruses, (newList) => {
+  selected.value = selected.value.filter(i => newList.includes(shopStore.viruses[i]));
 });
 
-const filterVirusesByStock = computed(() => {
-  if (stockFilter.value === true && filterStockActive.value) {
-    return filterVirusesByName.value.filter(v => v.stock > 0);
-  }
-  return filterVirusesByName.value;
-});
+// Bouton par ligne
+function alertMsg(index) {
+  const virus = filteredViruses.value[index];
+  alert(`Nom: ${virus.name}\nStock: ${virus.stock}\nEn solde: ${virus.sold ? 'Oui' : 'Non'}`);
+}
+
+// Bouton après la liste
+function alertSelected() {
+  const names = selected.value.map(i => shopStore.viruses[i].name);
+  alert("Virus sélectionnés: " + names.join(", "));
+}
 </script>
+
