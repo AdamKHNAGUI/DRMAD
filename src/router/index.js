@@ -1,33 +1,63 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import VirusesView from "@/views/VirusesView.vue";
 import ShopLoginView from "@/views/ShopLoginView.vue";
 import BankAccountView from "@/views/BankAccountView.vue";
+import ShopView from "@/views/ShopView.vue";
 
 const routes = [
-    // route pour afficher la liste des virus
-  {
-    path: '/shop/items',
-    name: 'shopitems',
-    component: VirusesView
-  },
-    // route pour se loguer
-  {
-    path: '/shop/login',
-    name: 'shoplogin',
-    // import dynamique du composant, plutôt qu'en début de fichier, comme la 1ère route.
-    component: ShopLoginView
-  },
     {
-        path:'/bank/account',
-        name:'bankaccount',
+        path: '/shop/items',
+        name: 'shopitems',
+        component: VirusesView
+    },
+    {
+        path: '/shop/login',
+        name: 'shoplogin',
+        component: ShopLoginView
+    },
+    {
+        path: '/bank/account',
+        name: 'bankaccount',
         component: BankAccountView
+    },
+    {
+        path: '/shop',
+        name:'shop',
+        component: ShopView,
+        children:[
+            {
+                path:'/home',
+                name:'shophome',
+                component:ShopHome
+            },
+            {
+                path:'/login',
+                name:'shoplogin',
+                component:ShopLogin
+            },
+            {
+                path:'/buy',
+                name:'shopbuy',
+                component:ShopBuy
+            },
+            {
+                path:'/pay/:orderId',
+                name:'shoppay',
+                component:ShopPay
+            },
+            {
+                path:'/orders',
+                name:'shoporders',
+                component:ShopOrders
+            },
+        ]
     }
 
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes,
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: routes,
 })
 
 export default router
