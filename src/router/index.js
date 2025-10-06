@@ -3,6 +3,7 @@ import VirusesView from "@/views/VirusesView.vue";
 import ShopLoginView from "@/views/ShopLoginView.vue";
 import BankAccountView from "@/views/BankAccountView.vue";
 import ShopView from "@/views/ShopView.vue";
+import ShopHome from "@/views/ShopHome.vue";
 
 const routes = [
     {
@@ -30,25 +31,25 @@ const routes = [
                 name:'shophome',
                 component:ShopHome
             },
-            {
-                path:'/login',
-                name:'shoplogin',
-                component:ShopLogin
-            },
+            // {
+            //     path:'/login',
+            //     name:'shoplogin',
+            //     // component:ShopLogin
+            // },
             {
                 path:'/buy',
                 name:'shopbuy',
-                component:ShopBuy
+                // component:ShopBuy
             },
             {
                 path:'/pay/:orderId',
                 name:'shoppay',
-                component:ShopPay
+                // component:ShopPay
             },
             {
                 path:'/orders',
                 name:'shoporders',
-                component:ShopOrders
+                // component:ShopOrders
             },
         ]
     }

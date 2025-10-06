@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import ShopService from '@/services/shop.service'
-
+import router from "@/router/index.js";
 export const useShopStore = defineStore('shop', () => {
 
   const viruses = ref([])
@@ -13,9 +13,11 @@ export const useShopStore = defineStore('shop', () => {
     let response = await ShopService.shopLogin(data)
     if (response.error === 0) {
       shopUser.value = response.data
+        await router.push("/shop/buy")
     }
     else {
-      console.log(response.data)
+      console.error(response.data)
+        alert(response.data)
     }
   }
 

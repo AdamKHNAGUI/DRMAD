@@ -87,15 +87,19 @@ watch(filteredViruses, (newList) => {
 });
 
 // Bouton par ligne
-function alertMsg(index) {
-  const virus = filteredViruses.value[index];
+function alertMsg(item) {
+
+  const virus = filteredViruses.value[item.index];
   alert(`Nom: ${virus.name}\nStock: ${virus.stock}\nEn solde: ${virus.sold ? 'Oui' : 'Non'}`);
 }
 
 // Bouton après la liste
-function alertSelected() {
+function alertSelected(item) {
+  console.log(item)
+
   const names = selected.value.map(i => shopStore.viruses[i].name);
   alert("Virus sélectionnés: " + names.join(", "));
+  selected.value = []
 }
 </script>
 

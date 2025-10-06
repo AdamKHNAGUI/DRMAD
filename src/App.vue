@@ -2,7 +2,7 @@
   <div>
     <NavBar :titles="navbtn" @menu-clicked="goTo"/>
     <h1>Welcome to DrMad app</h1>
-    <router-view></router-view>
+    <router-view/>
   </div>
 
 </template>
