@@ -4,6 +4,9 @@ import ShopLoginView from "@/views/ShopLoginView.vue";
 import BankAccountView from "@/views/BankAccountView.vue";
 import ShopView from "@/views/ShopView.vue";
 import ShopHome from "@/views/ShopHome.vue";
+import ShopBuy from "@/views/ShopBuy.vue";
+import ShopPay from "@/views/ShopPay.vue";
+import ShopOrders from "@/views/ShopOrders.vue";
 
 const routes = [
     {
@@ -32,24 +35,24 @@ const routes = [
                 component:ShopHome
             },
             // {
-            //     path:'/login',
+            //     path:'login',
             //     name:'shoplogin',
             //     // component:ShopLogin
             // },
             {
-                path:'/buy',
+                path:'buy',
                 name:'shopbuy',
-                // component:ShopBuy
+                component:ShopBuy
             },
             {
-                path:'/pay/:orderId',
+                path:'pay/:orderId',
                 name:'shoppay',
-                // component:ShopPay
+                component:ShopPay
             },
             {
-                path:'/orders',
+                path:'orders',
                 name:'shoporders',
-                // component:ShopOrders
+                component:ShopOrders
             },
         ]
     }

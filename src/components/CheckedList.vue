@@ -23,6 +23,11 @@
           <div v-if="field === 'wait'">
             <b>{{ formatDate(item[field].$date) }}</b>
           </div>
+          <div v-else-if="field === 'promotion'">
+            <div v-for="(item,index) in item['promotion']" :key="index" >
+                {{item.discount}}€ pour {{item.amount}} unités
+            </div>
+          </div>
           <div v-else>
             {{ item[field] }}
           </div>
