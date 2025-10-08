@@ -7,9 +7,7 @@
         <th v-if="itemButton?.show">{{ itemButton.text }}</th>
       </tr>
 
-      <!-- Corps du tableau -->
       <tr v-for="(item, index) in data" :key="index">
-        <!-- Case à cocher -->
         <td v-if="itemCheck" style="text-align: center;">
           <input
               type="checkbox"
@@ -18,7 +16,6 @@
           />
         </td>
 
-        <!-- Colonnes des données -->
         <td v-for="(field, fIndex) in fields" :key="index + '-' + fIndex">
           <div v-if="field === 'wait'">
             <b>{{ formatDate(item[field].$date) }}</b>
@@ -33,7 +30,6 @@
           </div>
         </td>
 
-        <!-- Bouton et champ quantité -->
         <td v-if="itemButton?.show" style="text-align: center;">
           <input
               v-if="itemAmount"
@@ -49,7 +45,6 @@
       </tr>
     </table>
 
-    <!-- Bouton après la liste -->
     <div v-if="listButton?.show" style="margin-top: 1rem; text-align: center;">
       <button @click="emitListButtonClicked">{{ listButton.text }}</button>
     </div>
@@ -75,10 +70,8 @@ const emit = defineEmits([
   "list-button-clicked"
 ])
 
-// Tableau réactif pour stocker les quantités par item
 const amounts = reactive([])
 
-// Initialise les quantités quand la data change
 watch(
     () => props.data,
     (newData) => {
@@ -90,11 +83,10 @@ watch(
     { immediate: true }
 )
 
-// Événement du bouton global
 const emitListButtonClicked = () => {
   const selectedItems = props.data
       .map((_, i) => ({ index: i, amount: amounts[i] }))
-      .filter((_, i) => props.checked[i]) // on garde seulement les items cochés
+      .filter((_, i) => props.checked[i])
   emit('list-button-clicked', selectedItems)
 }
 

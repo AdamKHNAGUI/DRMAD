@@ -36,7 +36,6 @@ function goTo(linkIndex) {
   }
 }
 
-// Dès que l'appli est lancée, on va chercher la liste des virus pour la stocker dans le store
 onMounted(() => {
   shopStore.getAllViruses()
 })

@@ -45,10 +45,8 @@ const filterStockActive = ref(false);
 const nomChamps = ["name","description","stock","wait","sold","price"];
 const showCheckBox = ref(true);
 
-// Tableau des indices sélectionnés dans la liste complète
 const selected = ref([]);
 
-// Liste filtrée combinée
 const filteredViruses = computed(() => {
   let result = shopStore.viruses;
 
@@ -65,12 +63,10 @@ const filteredViruses = computed(() => {
   return result;
 });
 
-// checked dynamique pour CheckedList
 const checked = computed(() =>
     filteredViruses.value.map(v => selected.value.includes(shopStore.viruses.indexOf(v)))
 );
 
-// Gérer la sélection
 function changeSelection(idxInFiltered) {
   const virus = filteredViruses.value[idxInFiltered];
   const idxInAll = shopStore.viruses.indexOf(virus);
@@ -81,21 +77,18 @@ function changeSelection(idxInFiltered) {
   }
 }
 
-// Supprimer de selected les virus qui ne sont plus filtrés
 watch(filteredViruses, (newList) => {
   selected.value = selected.value.filter(i => newList.includes(shopStore.viruses[i]));
 });
 
-// Bouton par ligne
 function alertMsg(item) {
 
   const virus = filteredViruses.value[item.index];
   alert(`Nom: ${virus.name}\nStock: ${virus.stock}\nEn solde: ${virus.sold ? 'Oui' : 'Non'}`);
 }
 
-// Bouton après la liste
 function alertSelected(item) {
-  console.log(item)
+
 
   const names = selected.value.map(i => shopStore.viruses[i].name);
   alert("Virus sélectionnés: " + names.join(", "));

@@ -3,16 +3,17 @@ import {defineStore} from 'pinia'
 
 import ShopService from '@/services/shop.service'
 import router from "@/router/index.js";
-import {bankaccounts} from "@/datasource/data.js";
 
 export const useShopStore = defineStore('shop', () => {
 
+    //state
     const viruses = ref([])
     const shopUser = ref(null)
     const basket = ref([])
 
+
+
     async function shopLogin(data) {
-        console.log('login');
         let response = await ShopService.shopLogin(data)
         if (response.error === 0) {
             shopUser.value = response.data
@@ -24,7 +25,6 @@ export const useShopStore = defineStore('shop', () => {
     }
 
     async function getAllViruses() {
-        console.log('récupération des viruses');
         let response = await ShopService.getAllViruses()
         if (response.error === 0) {
             viruses.value = response.data
@@ -35,9 +35,7 @@ export const useShopStore = defineStore('shop', () => {
 
     async function deleteBasket(data) {
         let response = await ShopService.deleteBasket(data);
-        console.log("réponse ???",response)
         if (response.error === 0){
-            console.log("cacacacac",response.data)
             basket.value = response.data;
 
         } else {
@@ -59,7 +57,7 @@ export const useShopStore = defineStore('shop', () => {
         let response = await ShopService.addBasket(bskt);
         if (response.error === 0) {
             basket.value.push(response.data);
-            console.log("panier de merde",response.data)
+
         } else {
             console.error(response.data);
             alert(response.data)
@@ -67,11 +65,9 @@ export const useShopStore = defineStore('shop', () => {
     }
 
     async function getBasket(bskt){
-        // console.warn(bskt)
         let response = await ShopService.getBasket(bskt);
         if (response.error === 0){
             basket.value = response.data;
-            console.log(basket.value)
         } else {
             console.error(response.data)
         }

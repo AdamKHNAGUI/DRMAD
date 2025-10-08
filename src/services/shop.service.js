@@ -108,14 +108,15 @@ async function clearBasket(){
 }
 
 
-async function orderBasketFromLocalSource(){
-    return LocalSource.orderBasket();
+async function orderBasketFromLocalSource(order){
+    return LocalSource.orderBasket(order);
 }
 
-async function orderBasket(){
+async function orderBasket(order){
+    console.log(order)
     let response = null;
     try {
-        response = await orderBasketFromLocalSource();
+        response = await orderBasketFromLocalSource(order);
     } catch (err){
         response = {error:1, status:404,data:'erreur réseau, impossible de créé la commande'}
     }
@@ -141,6 +142,7 @@ async function payOrderFromLocalSource(order){
 }
 
 async function payOrder(order){
+    console.log(order)
     let response = null;
     try {
         response = await payOrderFromLocalSource(order);
@@ -152,6 +154,36 @@ async function payOrder(order){
 }
 
 
+async function getOrdersByUserFromLocalSource(id){
+    return LocalSource.getOrdersByUser(id);
+}
+
+async function getOrdersByUser(id){
+    let response = null;
+    try {
+        response = await getOrdersByUserFromLocalSource(id);
+
+    } catch(err){
+        response = {error:1,status:404,data:'erreur réseau, impossbile de récupérer les commandes'}
+    }
+    return response;
+}
+
+async function cancelOrderFromLocalSource(id){
+    return LocalSource.cancelOrder(id);
+}
+
+async function cancelOrder(id){
+    let response = null;
+    try {
+        response = await cancelOrderFromLocalSource(id);
+
+    } catch(err){
+        response = {error:1,status:404,data:'erreur réseau, impossbile d\'annuler la commande'}
+    }
+    return response;
+}
+
 
 export default {
     shopLogin,
@@ -161,5 +193,8 @@ export default {
     clearBasket,
     addBasket,
     orderBasket,
-    getOrder, payOrder
+    getOrder,
+    payOrder,
+    getOrdersByUser,
+    cancelOrder
 }

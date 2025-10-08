@@ -2,7 +2,7 @@
   <div class="shop-orders">
     <h2>Commandes passées</h2>
 
-    <table>
+    <table v-if="orders.length">
       <thead>
       <tr>
         <th>Montant</th>
@@ -13,7 +13,7 @@
 
       <tbody>
       <tr v-for="order in orders" :key="order.uuid">
-        <td>{{ order.amount.toFixed(2) }} €</td>
+        <td>{{ order.total.toFixed(2) }} €</td>
         <td>{{ order.status }}</td>
         <td>
           <button
@@ -33,30 +33,32 @@
       </tbody>
     </table>
 
-    <p v-if="!orders.length">Aucune commande trouvée.</p>
+    <p v-else>Aucune commande trouvée.</p>
   </div>
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useShopStore } from '@/stores/shop.js'
+import ShopService from '@/services/shop.service.js'
 
 const store = useShopStore()
 const router = useRouter()
 
-const orders = computed(() => store.currentUser.orders)
+const orders = ref([])
 
-onMounted(() => {
-  store.fetchUserOrders()
+onMounted(async () => {
+  const response = await ShopService.getOrdersByUser(store.shopUser._id)
+  orders.value = response?.data || response || []
 })
 
 function pay(orderUuid) {
   router.push(`/shop/pay/${orderUuid}`)
 }
 
-function cancel(orderUuid) {
-  store.cancelOrder(orderUuid)
+async function cancel(orderUuid) {
+  await ShopService.cancelOrder(orderUuid)
+
 }
 </script>
-

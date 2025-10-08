@@ -7,6 +7,7 @@
       <input
           id="uuid"
           v-model="uuid"
+          size="40"
           placeholder="Entrez l'UUID de la commande"
       />
 
@@ -20,7 +21,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import * as ShopService from "@/services/shop.service.js";
+import ShopService from '@/services/shop.service'
 import { useShopStore } from "@/stores/shop.js";
 
 const route = useRoute();
