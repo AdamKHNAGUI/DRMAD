@@ -53,7 +53,7 @@ async function addToCart({index, amount}) {
   ShopStore.getBasket(ShopStore.shopUser._id);
 }
 
-=function addSelectedToCart(data) {
+function addSelectedToCart(data) {
   data.forEach(({ index, amount }) => {
     addToCart({ index, amount })
     checked.value[index] = false
