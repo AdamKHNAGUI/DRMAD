@@ -93,14 +93,14 @@ async function deleteBasket(data){
     return response;
 }
 
-async function clearBasketFromLocalSource(){
-    return LocalSource.clearBasket();
+async function clearBasketFromLocalSource(data){
+    return LocalSource.clearBasket(data);
 }
 
-async function clearBasket(){
+async function clearBasket(data){
     let response = null;
     try {
-        response = await clearBasketFromLocalSource();
+        response = await clearBasketFromLocalSource(data);
     } catch (err){
         response = {error:1, status:404,data:'erreur réseau, impossible de récupérer le panier'}
     }

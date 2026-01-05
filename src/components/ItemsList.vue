@@ -49,8 +49,8 @@ async function addToCart({index, amount}) {
     amount: amount
   }
 
-  ShopStore.addBasket(data)
-  ShopStore.getBasket(ShopStore.shopUser._id);
+  await ShopStore.addBasket(data)
+  // await ShopStore.getBasket(ShopStore.shopUser._id);
 }
 
 function addSelectedToCart(data) {

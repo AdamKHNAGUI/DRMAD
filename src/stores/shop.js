@@ -47,8 +47,8 @@ export const useShopStore = defineStore('shop', () => {
         }
     }
 
-    async function clearBasket() {
-        let response = await ShopService.clearBasket();
+    async function clearBasket(data) {
+        let response = await ShopService.clearBasket(data);
         if (response.error === 0){
             basket.value = response.data;
         } else {
@@ -60,8 +60,7 @@ export const useShopStore = defineStore('shop', () => {
     async function addBasket(bskt) {
         let response = await ShopService.addBasket(bskt);
         if (response.error === 0) {
-            basket.value.push(response.data);
-
+            basket.value = response.data
         } else {
             console.error(response.data);
             alert(response.data)
@@ -72,6 +71,7 @@ export const useShopStore = defineStore('shop', () => {
         let response = await ShopService.getBasket(bskt);
         if (response.error === 0){
             basket.value = response.data;
+
         } else {
             console.error(response.data)
         }

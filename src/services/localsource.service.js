@@ -100,7 +100,7 @@ async function getBasket(id) {
     let basket = JSON.parse(JSON.stringify(user.basket))
     return {error: 0, status: 200, data: basket}
 }
-async function clearBasket() {
+async function clearBasket(data) {
     let user = shopusers.find(e => e._id === data._id)
     if (!user) return { error: 1, status: 404, data: 'Utilisateur non trouvé' }
 
@@ -215,12 +215,12 @@ export async function payOrder({ userId, uuid,transactionUuid  }) {
     let order = user.orders.find(o => o.uuid === uuid);
     if (!order) return { error: 1, status: 404, data: "Commande introuvable" };
 
-    let transaction = transactions.find(t => t._id === transactionUuid);
+    let transaction = transactions.find(t => t.uuid === transactionUuid);
     if(!transaction) return {error:1,status:404,data:"Transaction introuvable"}
 
+    let TransactionAmount = Math.abs(transaction.amount);
 
-
-    if (order.total > transaction.amount){
+    if (order.total > TransactionAmount){
         return {error:1,status:404,data:`impossible de payer cette commande, il manque ${order.total - transaction.amount} €`}
     }
 
@@ -300,7 +300,7 @@ export async function createWithdraw(data) {
     // Crée la transaction
     const newTransaction = {
         _id: uuidv4(), // identifiant unique
-        amount: data.amount, // montant négatif
+        amount: -data.amount, // montant négatif
         account: account._id,
         date: { $date: new Date() },
         uuid: uuidv4()
@@ -313,7 +313,7 @@ export async function createWithdraw(data) {
 
     // Débite le compte
     account.amount -= data.amount
-
+    console.log(transactions)
     // Retourne le résultat
     return { error:0,status:201,data: { uuid: newTransaction.uuid, amount: account.amount } }
 }

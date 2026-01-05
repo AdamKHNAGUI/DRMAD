@@ -72,11 +72,12 @@ export const useBankStore = defineStore('bank', () => {
 
     async function createWithdraw(data) {
         const response = await BankService.createWithdrawService(data)
-
+        console.log(response)
         if (response.error === 0) {
             currentAccount.value.amount = response.data.amount
             await getTransactions(data.number)
             setStatus(1)
+            return response.data;
         } else {
             console.error(response.data)
             setStatus(-1)
@@ -90,6 +91,7 @@ export const useBankStore = defineStore('bank', () => {
             currentAccount.value.amount = response.data.amount
             await getTransactions(data.destNumber)
             setStatus(1)
+            return response.data;
         } else {
             console.error(response.data)
             setStatus(-1)

@@ -47,7 +47,7 @@ const errorMessage = ref("")
 
 const bankStore = useBankStore();
 
-function validateOperation() {
+async function validateOperation() {
   if (amount.value <= 0) {
     errorMessage.value="Montant invalide"
     return
@@ -72,16 +72,17 @@ function validateOperation() {
   }
 
   let response;
+  console.log(hasReceiver.value)
   if (hasReceiver.value){
     console.log("payement")
-    response = bankStore.createPayment(data2)
+    response = await bankStore.createPayment(data2)
   } else {
-    response = bankStore.createWithdraw(data1)
+    response = await bankStore.createWithdraw(data1)
   }
 
+  console.log(response)
 
-
-  successMessage.value = `L'opération est validée avec le n° : ${response.data}. Vous pouvez la retrouver dans l'historique`
+  successMessage.value = `L'opération est validée avec le n° : ${response.uuid}. Vous pouvez la retrouver dans l'historique`
 
   setTimeout(() => {
     successMessage.value = ""
