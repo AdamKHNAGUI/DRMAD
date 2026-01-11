@@ -51,7 +51,7 @@ h2 {
   }
 
   .basket-list {
-    order: -1; /* le panier passe au-dessus sur mobile */
+    order: -1;
   }
 }
 </style>

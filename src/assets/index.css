@@ -9,7 +9,7 @@
     --shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Reset minimaliste */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -24,13 +24,12 @@ body {
     padding: 20px;
 }
 
-/* Titres */
+
 h1, h2, h3 {
     color: var(--primary);
     margin-bottom: 10px;
 }
 
-/* Liens */
 a {
     color: var(--primary);
     text-decoration: none;
@@ -39,7 +38,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Boutons */
+
 button {
     background-color: var(--primary);
     color: white;
@@ -60,7 +59,7 @@ button:hover {
     transform: translateY(-1px);
 }
 
-/* Cartes */
+
 .card {
     background-color: white;
     border-radius: var(--radius);
@@ -69,7 +68,7 @@ button:hover {
     margin-bottom: 20px;
 }
 
-/* Champs de texte */
+
 input, select, textarea {
     width: 100%;
     padding: 10px;
@@ -84,7 +83,6 @@ input:focus, textarea:focus {
     box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.2);
 }
 
-/* Conteneur principal d'une view */
 .view-container {
     max-width: 800px;
     margin: 0 auto;
@@ -94,7 +92,6 @@ input:focus, textarea:focus {
     box-shadow: var(--shadow);
 }
 
-/* Navbar simple */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -113,7 +110,6 @@ input:focus, textarea:focus {
     color: var(--accent);
 }
 
-/* Petits messages / alertes */
 .alert {
     padding: 10px 15px;
     border-radius: var(--radius);

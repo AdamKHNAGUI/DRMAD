@@ -5,7 +5,7 @@ import BankService from '@/services/bankaccount.service.js'
 
 export const useBankStore = defineStore('bank', () => {
     // state
-    const currentAccount = ref(null)              // contient tout l'objet compte
+    const currentAccount = ref(null)
     const accountAmount = ref(0)
     const accountTransactions = ref([])
     const accountNumberState = ref(0)

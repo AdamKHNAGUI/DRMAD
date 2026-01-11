@@ -6,14 +6,14 @@
         class="menu-item"
     >
 
-      <!-- TITRE -->
+
       <div v-if="item.type === 'title'" class="menu-title">
         <slot name="menu-title" :label="item.label" >
           {{ item.label }}
         </slot>
       </div>
 
-      <!-- LIEN -->
+
       <span
           v-else-if="item.type === 'link'"
           class="menu-link"

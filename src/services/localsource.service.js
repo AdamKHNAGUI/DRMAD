@@ -120,7 +120,7 @@ async function addBasket(data) {
 
     const amount = data.amount ?? 1
     if (item.stock < amount) {
-        // item.stock -= data.amount
+
         return { error: 1, status: 400, data: 'Stock insuffisant' }
     }
 
@@ -134,10 +134,9 @@ async function addBasket(data) {
         })
     }
 
-    // Diminue le stock de l’article dans la liste globale
+
     item.stock -= amount
 
-    // Clone du panier pour éviter les références
     let basket = JSON.parse(JSON.stringify(user.basket))
 
 
@@ -268,10 +267,9 @@ export async function getTransactions(data) {
         return { data: "aucune transaction pour ce compte" }
     }
 
-    // Filtre les transactions correspondant au compte
     const accountTransactions = transactions
         .filter(tx => tx.account === data.idAccount)
-        .map(tx => ({ ...tx })) // copie des objets pour éviter modification
+        .map(tx => ({ ...tx }))
 
     if (accountTransactions.length > 0) {
         return { data: accountTransactions }
@@ -291,30 +289,25 @@ export async function createWithdraw(data) {
 
     }
 
-    // Cherche le compte
     const account = bankaccounts.find(acc => acc._id === data.idaccount)
     if (!account) {
         return { error:1,status:404,data: "compte invalide" }
     }
 
-    // Crée la transaction
     const newTransaction = {
-        _id: uuidv4(), // identifiant unique
-        amount: -data.amount, // montant négatif
+        _id: uuidv4(),
+        amount: -data.amount,
         account: account._id,
         date: { $date: new Date() },
         uuid: uuidv4()
     }
 
-    // c quoi la diff en l'id et l'uuid
 
-    // Ajoute la transaction au tableau
+
     transactions.push(newTransaction)
 
-    // Débite le compte
     account.amount -= data.amount
     console.log(transactions)
-    // Retourne le résultat
     return { error:0,status:201,data: { uuid: newTransaction.uuid, amount: account.amount } }
 }
 

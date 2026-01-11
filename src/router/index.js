@@ -20,11 +20,6 @@ const routes = [
         name: 'shopitems',
         component: VirusesView
     },
-    // {
-    //     path: '/shop/login',
-    //     name: 'shoplogin',
-    //     component: ShopLoginView
-    // },
     {
         path: "/bank",
         component: BankView,
